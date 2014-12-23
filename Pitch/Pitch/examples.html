@@ -1,0 +1,146 @@
+
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+      <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+   <!--
+This HTML is auto-generated from an M-file.
+To make changes, update the M-file and republish this document.
+      --><title>Music function examples</title><meta name="generator" content="MATLAB 7.9"><meta name="date" content="2010-02-02"><meta name="m-file" content="examples"><style type="text/css">
+
+body {
+  background-color: white;
+  margin:10px;
+}
+
+h1 {
+  color: #990000; 
+  font-size: x-large;
+}
+
+h2 {
+  color: #990000;
+  font-size: medium;
+}
+
+/* Make the text shrink to fit narrow windows, but not stretch too far in 
+wide windows. */ 
+p,h1,h2,div.content div {
+  max-width: 600px;
+  /* Hack for IE6 */
+  width: auto !important; width: 600px;
+}
+
+pre.codeinput {
+  background: #EEEEEE;
+  padding: 10px;
+}
+@media print {
+  pre.codeinput {word-wrap:break-word; width:100%;}
+} 
+
+span.keyword {color: #0000FF}
+span.comment {color: #228B22}
+span.string {color: #A020F0}
+span.untermstring {color: #B20000}
+span.syscmd {color: #B28C00}
+
+pre.codeoutput {
+  color: #666666;
+  padding: 10px;
+}
+
+pre.error {
+  color: red;
+}
+
+p.footer {
+  text-align: right;
+  font-size: xx-small;
+  font-weight: lighter;
+  font-style: italic;
+  color: gray;
+}
+
+  </style></head><body><div class="content"><h1>Music function examples</h1><!--introduction--><p>The MUSIC package directory contains a collection of utility functions for converting between different musical measures. You can convert between frequencies, tones, and character notes. There are also functions for calculating the number of cents between two notes.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Scientific Pitch Notation</a></li><li><a href="#2">Semitones</a></li><li><a href="#3">Frequency</a></li><li><a href="#4">Musical Interval</a></li><li><a href="#5">Centitones</a></li></ul></div><h2>Scientific Pitch Notation<a name="1"></a></h2><p>Scientific pitch notation is a character-based method of specifying a note. There are two parts: the note and the octave. For example, middle C on the piano 'C4' and the low E string on a guitar is 'E2'.</p><pre class="codeinput">notes = {<span class="string">'C3'</span>, <span class="string">'A3'</span>, <span class="string">'A4'</span>, <span class="string">'Bb6'</span>}
+</pre><pre class="codeoutput">notes = 
+    'C3'    'A3'    'A4'    'Bb6'
+</pre><h2>Semitones<a name="2"></a></h2><p>A semitone is equal to one half-step. For example, A# is one semitone above A. Semitones can also specify an absolute note. In this package, the term 'semitone' means the number of half-steps above or below C4. C4 is 'middle C' on a piano and is a common musical reference datum.</p><pre class="codeinput">tones = music.note2tone(notes)
+</pre><pre class="codeoutput">tones =
+   -12    -3     9    34
+</pre><h2>Frequency<a name="3"></a></h2><p>The frequency of a note doubles every octave. For example A3 is 220 Hz and A4 is 440 Hz.</p><pre class="codeinput">freqs = music.note2freq(notes)
+</pre><pre class="codeoutput">freqs =
+       130.81          220          440       1864.7
+</pre><h2>Musical Interval<a name="4"></a></h2><p>The formats above are ways of specifying absolute pitches. In music theory however the most important characteristic of a note is its position in a key. C3 and C4 are different frequencies but they can be substituted for each other in a musical phrase. The passage will still sound correct and pleasing to the ear (assuming it was pleasing to begin with!).</p><p>In this representation we derive the interval of a note within a given key, as well as the absolute octave it occurs in.</p><pre class="codeinput">[intervalsC,octavesC] = music.note2interval(notes,<span class="string">'C'</span>)  <span class="comment">% key of 'C'</span>
+[intervalsG,octavesG] = music.note2interval(notes,<span class="string">'G'</span>)  <span class="comment">% key of 'G'</span>
+</pre><pre class="codeoutput">intervalsC =
+     0     9     9    10
+octavesC =
+     3     3     4     6
+intervalsG =
+     5     2     2     3
+octavesG =
+     3     3     4     6
+</pre><h2>Centitones<a name="5"></a></h2><p>A cent is a logarithmic measure of note spacing. A semitone is equal to 100 cents and there are 1200 cents in an octave. They are frequently used when tuning instruments as a measure of how close a pitch is to the correct frequency. For example, a guitar string can be considered tuned if it is within +/- 10 cents of the correct pitch.</p><pre class="codeinput">cents = music.note2cent(<span class="string">'C4'</span>,notes)
+</pre><pre class="codeoutput">cents =
+        -1200         -300          900         3400
+</pre><p class="footer">Copyright 2010 The MathWorks, Inc.<br>
+      Published with MATLAB&reg; 7.9<br></p></div><!--
+##### SOURCE BEGIN #####
+%% Music function examples
+% The MUSIC package directory contains a collection of utility functions for
+% converting between different musical measures. You can convert between
+% frequencies, tones, and character notes. There are also functions for
+% calculating the number of cents between two notes.
+
+%    Copyright 2010 The MathWorks, Inc.
+
+
+%% Scientific Pitch Notation
+% Scientific pitch notation is a character-based method of specifying a note.
+% There are two parts: the note and the octave. For example, middle C on the
+% piano 'C4' and the low E string on a guitar is 'E2'.
+
+notes = {'C3', 'A3', 'A4', 'Bb6'}
+
+
+%% Semitones
+% A semitone is equal to one half-step. For example, A# is one semitone above A.
+% Semitones can also specify an absolute note. In this package, the term
+% 'semitone' means the number of half-steps above or below C4. C4 is 'middle C'
+% on a piano and is a common musical reference datum.
+
+tones = music.note2tone(notes)
+
+
+%% Frequency
+% The frequency of a note doubles every octave. For example A3 is 220 Hz and
+% A4 is 440 Hz.
+
+freqs = music.note2freq(notes)
+
+
+%% Musical Interval
+% The formats above are ways of specifying absolute pitches. In music theory
+% however the most important characteristic of a note is its position in a key.
+% C3 and C4 are different frequencies but they can be substituted for each
+% other in a musical phrase. The passage will still sound correct and pleasing
+% to the ear (assuming it was pleasing to begin with!).
+%
+% In this representation we derive the interval of a note within a given key, as
+% well as the absolute octave it occurs in.
+
+[intervalsC,octavesC] = music.note2interval(notes,'C')  % key of 'C'
+[intervalsG,octavesG] = music.note2interval(notes,'G')  % key of 'G'
+
+
+%% Centitones
+% A cent is a logarithmic measure of note spacing. A semitone is equal to 100
+% cents and there are 1200 cents in an octave. They are frequently used when
+% tuning instruments as a measure of how close a pitch is to the correct
+% frequency. For example, a guitar string can be considered tuned if it is
+% within +/- 10 cents of the correct pitch. 
+
+cents = music.note2cent('C4',notes)
+##### SOURCE END #####
+--></body></html>
